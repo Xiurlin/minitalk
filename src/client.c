@@ -3,27 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: drestrep <drestrep@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 05:23:46 by drestrep          #+#    #+#             */
-/*   Updated: 2023/09/25 08:47:24 by drestrep         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:48:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-int	server_pid;
-
-void	sigusr1_handler(int sigtype)
+void	send_str(int pid, char *str)
 {
-	
+	int	bit;
+	int	i;
+
+	while (*str)
+	{
+		i = 8;
+		while (i < 8)
+		{
+			bit = *str >> 1 & 1;
+			if (bit == 0)
+				kill(pid, SIGUSR1);
+			else
+				kill(pid, SIGUSR2);
+			i++;
+		}
+		str++;
+	}
 }
 
 int	main(int argc, char **argv)
 {
-	struct sigaction signal;
-	signal.sa_handler = &sigusr1_handler;
-	//signal.__sigaction_u.__sa_handler = &handle_sigsur1;
 	int		pid;
 
 	if (argc != 3)
@@ -31,10 +42,7 @@ int	main(int argc, char **argv)
 		ft_printf("Correct use: ./client SERVER_PID your_string\n");
 		exit(1);
 	}
-	pid = getpid();
-	ft_printf("PID: %d\n", pid);
-	server_pid = ft_atoi(argv[1]);
-	printf("Server pid: %d\n", server_pid);
-	sigaction(SIGUSR1, &signal, NULL);
+	ft_printf("PID: %d\n", get_pid());
+	send_str(pid, argv[2]);
 	return (0);
 }

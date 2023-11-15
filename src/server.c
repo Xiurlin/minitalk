@@ -3,27 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: drestrep <drestrep@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 05:25:07 by drestrep          #+#    #+#             */
-/*   Updated: 2023/09/25 08:36:21 by drestrep         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:40:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-int	main(int argc, char **argv)
+void	handler(int signum)
+{
+	static int i;
+	static char c;
+
+	if (signum == SIGUSR1)
+		c |= 0 << i;
+	else if (signum == SIGUSR2)
+		c |= 1 << i;
+	i++;
+	if (i == 8)
+	{
+		write (1, &c, 1);
+		i = 0;
+		c = 0;
+	}
+}
+
+void	signals(void)
+{
+	struct sigaction sa;
+
+	sa.sa_handler = handler;
+	sa.sa_flags = 0;
+	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
+		write(2, "ERROR\n", 6);
+}
+
+int	main(void)
 {
 	int		pid;
 
-	if (argc != 1)
-	{
-		ft_printf("Correct use: ./server\n");
-		exit(1);
-	}
 	pid = getpid();
 	ft_printf("PID: %d\n", pid);
 	while (1)
-		sleep(0.1);
+		signals();
 	return (0);
 }
