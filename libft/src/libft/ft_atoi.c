@@ -1,22 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: drestrep <drestrep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 08:44:20 by drestrep          #+#    #+#             */
-/*   Updated: 2023/12/06 19:30:38 by drestrep         ###   ########.fr       */
+/*   Created: 2022/08/10 19:14:56 by drestrep          #+#    #+#             */
+/*   Updated: 2023/12/06 18:04:31 by drestrep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "../../include/libft/libft.h"
 
-# include <signal.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include "../libft/include/libft/libft.h"
-# include "../libft/include/ft_printf/ft_printf.h"
+int	ft_atoi(const char *str)
+{
+	int	res;
+	int	sgn;
+	int	i;
 
-#endif
+	res = 0;
+	sgn = 1;
+	i = 0;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+		i++;
+	if ((str[i] == '+') || (str[i] == '-'))
+	{
+		if (str[i] == '-')
+			sgn *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		res = (res * 10) + (str[i] - '0');
+		i++;
+	}
+	return (sgn * res);
+}

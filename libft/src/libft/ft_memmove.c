@@ -1,22 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: drestrep <drestrep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 08:44:20 by drestrep          #+#    #+#             */
-/*   Updated: 2023/12/06 19:30:38 by drestrep         ###   ########.fr       */
+/*   Created: 2022/07/07 00:09:40 by drestrep          #+#    #+#             */
+/*   Updated: 2023/12/06 18:05:48 by drestrep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "../../include/libft/libft.h"
 
-# include <signal.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include "../libft/include/libft/libft.h"
-# include "../libft/include/ft_printf/ft_printf.h"
+void	*ft_memmove(void *dst, const void *src, size_t len)
+{
+	size_t	i;
 
-#endif
+	if ((char *)dst == (char *)src)
+		return (dst);
+	if ((char *)dst < (char *)src)
+	{
+		i = 0;
+		while (i < len)
+		{
+			((char *)dst)[i] = ((char *)src)[i];
+			i++;
+		}
+	}
+	else
+	{
+		while (len)
+		{
+			i = len - 1;
+			((char *)dst)[i] = ((char *)src)[i];
+			len--;
+		}
+	}
+	return (dst);
+}

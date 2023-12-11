@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: drestrep <drestrep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 08:44:20 by drestrep          #+#    #+#             */
-/*   Updated: 2023/12/06 19:30:38 by drestrep         ###   ########.fr       */
+/*   Created: 2022/08/27 00:41:12 by drestrep          #+#    #+#             */
+/*   Updated: 2023/12/06 18:05:28 by drestrep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "../../include/libft/libft.h"
 
-# include <signal.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include "../libft/include/libft/libft.h"
-# include "../libft/include/ft_printf/ft_printf.h"
+t_list	*ft_lstlast(t_list *lst)
+{
+	t_list	*aux;
 
-#endif
+	aux = lst;
+	while (aux)
+	{
+		if (aux->next == NULL)
+			return (aux);
+		aux = aux->next;
+	}
+	return (aux);
+}

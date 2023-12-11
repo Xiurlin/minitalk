@@ -3,43 +3,59 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: drestrep <drestrep@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/11/03 08:06:37 by marvin            #+#    #+#              #
-#    Updated: 2023/11/03 08:06:37 by marvin           ###   ########.fr        #
+#    Created: 2023/11/03 08:06:37 by drestrep          #+#    #+#              #
+#    Updated: 2023/11/03 08:06:37 by drestrep         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SERVER = server
-CLIENT = client
+SERVER 		=	server
+CLIENT 		=	client
 
-LIBFT_DIR	=		libft
-LIBFT		=		$(LIBFT_DIR)/libft.a
+CC			= 	gcc
+CFLAGS		= 	-Wall -Wextra -Werror
 
-SERVER_SRCS	=		src/server.c
-SERVER_OBJS =		$(SERVER_SRCS:.c=.o)
+SRC_DIR		=	src
+OBJ_DIR		=	obj
 
-CLIENT_SRCS = 		src/client.c
-CLIENT_OBJS = 		$(CLIENT_SRCS:.c=.o)
+LIBFT_DIR 	=	libft
+LIBFT		=	$(LIBFT_DIR)/libft.a
 
-CC			= 		gcc
-CFLAGS		= 		-Wall -Wextra -Werror
+SERVER_SRCS	=	$(SRC_DIR)/server.c
+CLIENT_SRCS	=	$(SRC_DIR)/client.c
 
-all:		$(SERVER) $(CLIENT)
+SERVER_OBJS =	$(OBJ_DIR)/server.o
+CLIENT_OBJS =	$(OBJ_DIR)/client.o
 
-$(SERVER): $(SERVER_OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT) -o server
-$(CLIENT): $(CLIENT_OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT) -o client
+all:			$(SERVER) $(CLIENT)
+
+$(SERVER):		$(SERVER_OBJS) $(LIBFT) | $(OBJ_DIR)
+				@$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT) -o server
+				@echo " "
+				@echo "🗣🗣     🗣🗣   🗣🗣   🗣🗣     🗣🗣   🗣🗣   🗣🗣🗣🗣🗣🗣      🗣🗣🗣🗣       🗣🗣     🗣🗣   🗣"
+				@echo "🗣🗣🗣   🗣🗣🗣   🗣🗣   🗣🗣🗣    🗣🗣   🗣🗣     🗣🗣       🗣🗣  🗣🗣      🗣🗣     🗣🗣  🗣"
+				@echo "🗣🗣  🗣  🗣🗣   🗣🗣   🗣🗣  🗣  🗣🗣   🗣🗣     🗣🗣      🗣🗣🗣🗣🗣🗣🗣🗣     🗣🗣     🗣🗣 🗣"
+				@echo "🗣🗣     🗣🗣   🗣🗣   🗣🗣    🗣🗣🗣   🗣🗣     🗣🗣     🗣🗣      🗣🗣    🗣🗣     🗣🗣  🗣"
+				@echo "🗣🗣     🗣🗣   🗣🗣   🗣🗣     🗣🗣   🗣🗣     🗣🗣    🗣🗣        🗣🗣   🗣🗣🗣🗣   🗣🗣   🗣"
+				@echo " "
+$(CLIENT):		$(CLIENT_OBJS) $(LIBFT) | $(OBJ_DIR)
+				@$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT) -o client
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+				@$(CC) $(CFLAGS) -c $< -o $@
+
 $(LIBFT):
-	make bonus -C $(LIBFT_DIR)
+				@make -C $(LIBFT_DIR)
+
+$(OBJ_DIR):
+				@mkdir -p $@
 
 clean:
-	make clean -C $(LIBFT_DIR)
-	rm -rf $(SERVER_OBJS) $(CLIENT_OBJS)
+				@make fclean -C $(LIBFT_DIR)
+				@rm -rf $(OBJ_DIR)
 
-fclean: clean
-	rm -rf $(SERVER) $(CLIENT)
-	make fclean -C $(LIBFT_DIR)
+fclean:			clean
+				@rm -rf $(SERVER) $(CLIENT)
 
-re: fclean all
+re:				fclean all
